@@ -1,0 +1,32 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+             version="1.0">
+	<persistence-unit name="TestManager" transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+<!--  <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> -->
+<class>de.acme.testmanager.entities.TestEntity</class>
+    	<jta-data-source>java:/TestManagerDS</jta-data-source>
+
+    	<properties>
+    		<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.default_schema" value="testmanager" />
+    	</properties>
+			
+<!-- 			<property name="hibernate.cache.region.factory_class" -->
+<!--      value="org.hibernate.cache.infinispan.JndiInfinispanRegionFactory"/> -->
+<!-- <property name="hibernate.cache.infinispan.cachemanager" -->
+<!--      value="java:jboss/infinispan/hibernate"/> -->
+<!-- <property name="hibernate.transaction.manager_lookup_class" -->
+<!--      value="org.hibernate.transaction.JBossTransactionManagerLookup"/> -->
+<!-- <property name="hibernate.cache.use_second_level_cache" value="true"/> -->
+<!-- <property name="hibernate.cache.use_minimal_puts" value="true"/> -->
+
+
+
+<!--  Eclipselink stuff -->
+<!-- 	 <properties> -->
+<!--       <property name="eclipselink.ddl-generation" value="none"/> -->
+<!--     </properties> -->
+	</persistence-unit>
+</persistence>

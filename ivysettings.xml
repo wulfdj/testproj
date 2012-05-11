@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ivysettings>
+    <settings defaultResolver="default"/>
+	<property name="version.arquillian" value="1.0.0.CR7" />
+	<property name="version.hamcrest" value="1.2" />
+	<property name="version.cdi_spec" value="1.0-SP4" />
+	<property name="version.junit" value="4.8.1" />
+	<property name="version.log4j" value="1.2.14" />
+	<property name="version.slf4j" value="1.5.10" />
+	<property name="version.jbossas_7" value="7.1.0.Final" />
+    <resolvers>
+        <chain name="default">
+            <ibiblio name="maven2" m2compatible="true"/>
+            <ibiblio name="jboss-public" m2compatible="true" checksums="" root="http://repository.jboss.org/nexus/content/groups/public"/>
+        </chain>
+    </resolvers>
+</ivysettings>

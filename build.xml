@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TestManagerEJB Build" default="main" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+    <description>
+        simple example build file
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src.dir" location="src/java"/>
+  <property name="build.dir" location="build"/>
+  <property name="dist.dir"  location="dist"/>
+	<property name="jboss.home" location="D:/jboss-as-7.1.1.Final" />
+  <property name="config.dir"  location="src/conf/META-INF"/>
+	<property name="version.arquillian" value="1.0.0.CR7" />
+	<property name="version.hamcrest" value="1.2" />
+	<property name="version.cdi_spec" value="1.0.0.Final" />
+	<property name="version.junit" value="4.8.1" />
+	<property name="version.log4j" value="1.2.14" />
+	<property name="version.slf4j" value="1.5.10" />
+	<property name="version.weld_core" value="1.1.1.Final" />
+	<property name="version.jbossas_7" value="7.1.0.Final" />
+	
+	 <property name="maven.repo.central" value="http://repo1.maven.org/maven2"/>
+	    <property name="maven.repo.jboss-public" value="https://repository.jboss.org/nexus/content/groups/public"/>
+	    <property name="maven.repo.local" value="${user.home}/.m2/repository"/>
+	    <property name="maven.settings.offline" value="false"/>
+	    <property name="maven.settings.interactiveMode" value="true"/>
+	<property name="ivy.install.version" value="2.2.0-rc1"/>
+	<property name="ivy.jar.dir" value="${basedir}/lib"/>
+	<property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar"/>
+	
+	 <target name="init-ivy">
+	        <available property="ivy.installed" value="true" file="${ivy.jar.file}" type="file"/>
+	    </target>
+
+	    <target name="download-ivy" depends="init-ivy" unless="ivy.installed">
+	        <mkdir dir="${ivy.jar.dir}"/>
+	        <echo message="Installing ivy..."/>
+	        <get src="${maven.repo.central}/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
+	             dest="${ivy.jar.file}"/>
+	    </target>
+
+	    <target name="load-ivy" depends="init-ivy,download-ivy">
+	        <path id="ivy.lib.path">
+	            <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+	        </path>
+	        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+	        <ivy:settings file="${basedir}/ivysettings.xml"/>
+	    </target>
+
+	    <target name="clean-ivy" depends="load-ivy">
+	        <ivy:cleancache/>
+	    </target>
+	 <target name="init" depends="load-ivy">
+	    </target>
+	<target name="run tests" depends="init">
+		 <ivy:resolve conf="test"/>
+		        <ivy:cachepath pathid="build.test.classpath" conf="test"/>
+		
+		 <javac destdir="test/comptest/build"
+		                 nowarn="true"
+		                 debug="true"
+		                 optimize="true"
+		                 deprecation="false"
+		                 target="1.6"
+		                 verbose="false"
+		                 fork="true"
+		                 source="1.6">
+		            <src>
+		                <pathelement location="test/comptest/java"/>
+		            </src>
+		            <classpath>
+		                <path refid="build.classpath"/>
+		                <path refid="build.test.classpath"/>
+		                <pathelement location="test/comptest/build"/>
+		            </classpath>
+		        </javac>
+	</target>
+
+  <target name="compile" description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+<!--      <delete verbose="true"> -->
+<!-- 			<fileset dir="${build.dir}"> -->
+<!-- 				<include name="**/*.*" /> -->
+<!-- 			</fileset> -->
+<!-- 		</delete> -->
+    <javac srcdir="${src.dir}" destdir="${build.dir}"/>
+  </target>
+
+  <target name="main" depends="compile"
+        description="generate the distribution" >
+       <delete verbose="true">
+			<fileset dir="${dist.dir}">
+				<include name="TestManagerEJB.*" />
+			</fileset>
+		</delete>
+    <jar jarfile="${dist.dir}/TestManagerEJB.jar"  >
+    	<manifest>
+    		<attribute name="Dependencies" value="org.eclipse.persistence" />
+    	</manifest>
+		<zipfileset dir="${config.dir}" prefix="META-INF">
+			<include name="**/*.*" />
+		</zipfileset>
+		<zipfileset dir="${build.dir}" includes="**/*.class" />
+	</jar>
+  </target>
+  <target name="deploy" >
+  		<delete verbose="true">
+			<fileset dir="${jboss.home}/standalone/deployments">
+				<include name="TestManagerEJB.*" />
+			</fileset>
+		</delete>
+    		<copy todir="${jboss.home}/standalone/deployments">
+			<fileset dir="${dist.dir}">
+				<include name="TestManagerEJB.jar" />
+			</fileset>
+		</copy>
+  </target>
+  <target name="build and deploy" depends="main,deploy" ></target>
+</project>

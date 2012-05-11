@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
+    <info organisation="de.acme" module="testmanager" />
+    <dependencies>
+        <dependency org="org.jboss.arquillian.junit" name="arquillian-junit-container" rev="${version.arquillian}" />
+        <dependency org="junit" name="junit" rev="${version.junit}" />
+        <dependency org="org.hamcrest" name="hamcrest-core" rev="${version.hamcrest}" />
+
+        <dependency org="org.slf4j" name="slf4j-log4j12" rev="${version.slf4j}" />
+        <dependency org="log4j" name="log4j" rev="${version.log4j}" />
+
+        <dependency org="org.jboss.as" name="jboss-as-arquillian-container-managed" rev="${version.jbossas_7}" />
+        <dependency org="javax.enterprise" name="cdi-api" rev="${version.cdi_spec}" />
+    </dependencies>
+</ivy-module>
