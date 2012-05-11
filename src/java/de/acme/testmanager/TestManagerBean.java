@@ -28,20 +28,9 @@ public class TestManagerBean implements ITestManager{
 	EntityManager entityManager;
 
 	@Override
-	public void create(TestEntity entity) {
-//		log.info("create start");
-//		entity.setBean(Thread.currentThread().getName() + ", " + Thread.currentThread().getId());
-		entity.setTime("" + System.currentTimeMillis());
-		entityManager.persist(entity);
-//		log.info("create end");
-		
-//		return entity;
-	}
-
-	@Override
 	public void doNothing() {
 		// TODO Auto-generated method stub
-	}
+	}	
 	
 	@Asynchronous
 	@Override
@@ -53,6 +42,17 @@ public class TestManagerBean implements ITestManager{
 			e.printStackTrace();
 		}
 		return new AsyncResult<Integer>(42);
+	}
+	
+	@Override
+	public void create(TestEntity entity) {
+//		log.info("create start");
+//		entity.setBean(Thread.currentThread().getName() + ", " + Thread.currentThread().getId());
+		entity.setTime("" + System.currentTimeMillis());
+		entityManager.persist(entity);
+//		log.info("create end");
+		
+//		return entity;
 	}
 	
 //	@AroundInvoke
